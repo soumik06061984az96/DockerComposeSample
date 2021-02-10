@@ -19,7 +19,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      DbServer: "192.168.0.179"
+      DbServer: "DOCKER HOST IP ADDRESS"
       Port: "1433"
       Database: "LicenseDB"
       UserId: "SA"
