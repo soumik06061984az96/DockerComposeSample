@@ -1,0 +1,33 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: "3.4"
+services:
+  licenseapi-db:
+    image: "mcr.microsoft.com/mssql/server:2017-CU21-ubuntu-16.04"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Welcome#1"
+    ports:
+      - "1433:1433"
+    networks:
+      - licenseapi-net
+  licensegeneratorapi:
+    image: licensegeneratorapi:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      DbServer: "192.168.0.179"
+      Port: "1433"
+      Database: "LicenseDB"
+      UserId: "SA"
+      Password: "Welcome#1"
+    networks:
+      - licenseapi-net
+    depends_on:
+      - licenseapi-db
+networks:
+  licenseapi-net:
+    driver: "bridge"
